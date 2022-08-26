@@ -2,7 +2,7 @@
 	name = "Tend Damage (Brute/Burn)"
 	possible_locs = ALL_LIMBS
 	invasiveness = list(SURGERY_DEPTH_SURFACE)
-	required_surgery_skill = SKILL_SURGERY_YAUTJA
+	required_surgery_skill = SKILL_SURGERY_YAUTJA // Only predators can do this
 	pain_reduction_required = 0
 	steps = list(
 		/datum/surgery_step/mstabilize_wounds,
@@ -12,7 +12,6 @@
 	lying_required = FALSE
 	self_operable = TRUE
 
-///Medicomp can be used by anyone with knowledge.
 /datum/surgery/mcomp_wounds/can_start(mob/living/carbon/human/user, mob/living/carbon/human/patient, var/obj/limb/L, obj/item/tool)
 	if((istype(user) && HAS_TRAIT(user, TRAIT_YAUTJA_TECH)) && (patient.getBruteLoss() || patient.getFireLoss()))
 		return TRUE
@@ -32,13 +31,13 @@
 	name = "stabilize wounds"
 	desc = "stabilize the wounds"
 	tools = SURGERY_TOOLS_MEDICOMP_STABILIZE_WOUND
-	time = 5 SECONDS //Heals 3 brute & 3 burn per second.
+	time = 5 SECONDS
 
 /datum/surgery_step/mstabilize_wounds/(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 
 /datum/surgery_step/mstabilize_wounds/preop(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	user.affected_message(target,
-		SPAN_NOTICE("You begin to stabilize [target]'s wounds with \the [tool]."),
+		SPAN_NOTICE("You begin to stabilize your wounds with \the [tool]."),
 		SPAN_NOTICE("[user] begins to stabilize your wounds with \the [tool]."),
 		SPAN_NOTICE("[user] begins tto stabilize [target]'s wounds with \the [tool]."))
 
@@ -56,16 +55,16 @@
 
 	if(!target.getBruteLoss() && !target.getFireLoss())
 		user.affected_message(target,
-			SPAN_NOTICE("You finish stabilizing the wounds on [target]."),
 			SPAN_NOTICE("[user] finishes stabilizing your wounds."),
+			SPAN_NOTICE("You finish stabilizing the wounds on [target]."),
 			SPAN_NOTICE("[user] finishes stabilizing the [target]'s wounds."))
 
 		surgery.affected_limb.remove_all_bleeding(TRUE, FALSE)
 		log_interact(user, target, "[key_name(user)] finished stabilizing [key_name(target)]'s wounds with \the [tool], ending [surgery].")
 	else
 		user.affected_message(target,
-			SPAN_NOTICE("You stabilize some of the injuries on [target]."),
-			SPAN_NOTICE("[user] stabilize some of your injuries."),
+			SPAN_NOTICE("you stabilize some of your injuries."),
+			SPAN_NOTICE("[user] stabilize some of your injuries on [target]."),
 			SPAN_NOTICE("[user] stabilize some of [target]'s injuries."))
 
 		log_interact(user, target, "[key_name(user)] stabilized some of [key_name(target)]'s wounds with \the [tool].")
@@ -82,8 +81,8 @@
 
 /datum/surgery_step/mtend_wounds/preop(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	user.affected_message(target,
-		SPAN_NOTICE("You begin to suture and tend [target]'s wounds with \the [tool]."),
-		SPAN_NOTICE("[user] begins to suture and tend your wounds with \the [tool]."),
+		SPAN_NOTICE("you begin to tend your stabilized wounds with \the [tool]."),
+		SPAN_NOTICE("You begins to tend [target]'s wounds with \the [tool]."),
 		SPAN_NOTICE("[user] begins to suture and tend [target]'s wounds with \the [tool]."))
 	playsound(target, 'sound/misc/heal_gun.ogg', 25,)
 
@@ -95,8 +94,8 @@
 
 	if(!target.getBruteLoss() && !target.getFireLoss())
 		user.affected_message(target,
-			SPAN_NOTICE("You finish treating the wounds on [target]."),
-			SPAN_NOTICE("[user] finishes treating your wounds."),
+			SPAN_NOTICE("you finish treating your stabilized wounds."),
+			SPAN_NOTICE("[user] finishes treating the stabilized wounds on [target]."),
 			SPAN_NOTICE("[user] finishes treating the [target]'s wounds."))
 
 	if(isSpeciesYautja(target))
@@ -108,9 +107,9 @@
 		log_interact(user, target, "[key_name(user)] finished tending [key_name(target)]'s wounds with \the [tool], ending [surgery].")
 
 		user.affected_message(target,
-			SPAN_NOTICE("You treat some of the injuries on [target]."),
-			SPAN_NOTICE("[user] treats some of your injuries."),
-			SPAN_NOTICE("[user] treats some of [target]'s injuries."))
+			SPAN_NOTICE("you treats of your injuries."),
+			SPAN_NOTICE("You treat of the injuries on [target]."),
+			SPAN_NOTICE("[user] treats of [target]'s injuries."))
 
 		log_interact(user, target, "[key_name(user)] tended some of [key_name(target)]'s wounds with \the [tool].")
 
@@ -132,7 +131,7 @@
 
 /datum/surgery_step/cauterize/mclamp_wound/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	user.affected_message(target,
-		SPAN_NOTICE("You begin to place clamps around [target]'s wounds with \the [tool]."),
+		SPAN_NOTICE("You begin to place clamps around your wounds with \the [tool]."),
 		SPAN_NOTICE("[user] begin to clamp your wounds with \the [tool]."),
 		SPAN_NOTICE("[user] begins to clamp [target]'s wounds with \the [tool]."))
 
