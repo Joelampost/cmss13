@@ -167,7 +167,6 @@
 	to_chat(usr, SPAN_NOTICE("The bracer's sound is now turned [notification_sound ? "on" : "off"]."))
 
 
-
 /obj/item/clothing/gloves/yautja/thrall
 	name = "thrall bracers"
 	desc = "A pair of strange alien bracers, adapted for human biology."
@@ -200,6 +199,7 @@
 	var/caster_material = "ebony"
 
 	var/obj/item/card/id/bracer_chip/embedded_id
+
 
 	var/caster_deployed = FALSE
 	var/obj/item/weapon/gun/energy/yautja/plasma_caster/caster
@@ -722,7 +722,7 @@
 
 
 /obj/item/clothing/gloves/yautja/hunter/verb/injectors()
-	set name = "Create Self-Heal Crystal"
+	set name = "Create Stabilising Crystal"
 	set category = "Yautja.Utility"
 	set desc = "Create a focus crystal to energize your natural healing processes."
 	set src in usr
@@ -742,7 +742,7 @@
 		return FALSE
 
 	if(inject_timer)
-		to_chat(caller, SPAN_WARNING("You recently activated the healing crystal. Be patient."))
+		to_chat(usr, SPAN_WARNING("You recently activated the stabilising crystal. Be patient."))
 		return FALSE
 
 	if(!drain_power(caller, 1000))
@@ -759,7 +759,7 @@
 
 /obj/item/clothing/gloves/yautja/hunter/proc/injectors_ready()
 	if(ismob(loc))
-		to_chat(loc, SPAN_NOTICE("Your bracers beep faintly and inform you that a new healing crystal is ready to be created."))
+		to_chat(loc, SPAN_NOTICE("Your bracers beep faintly and inform you that a new stabilising crystal is ready to be created."))
 	inject_timer = FALSE
 
 /obj/item/clothing/gloves/yautja/hunter/verb/call_disk()

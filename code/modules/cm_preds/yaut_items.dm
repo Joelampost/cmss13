@@ -874,3 +874,35 @@
 	flags_equip_slot = SLOT_ID
 	flags_item = ITEM_PREDATOR|DELONDROP|NODROP
 	paygrade = null
+
+/obj/item/storage/medicomp
+	name = "medicomp"
+	desc = "A complex kit of alien tools and medicines."
+	icon = 'icons/obj/items/clothing/pouches.dmi'
+	icon_state = "small_drop"
+	use_sound = "toolbox"
+	flags_item = ITEM_PREDATOR
+	w_class = SIZE_SMALL
+	flags_item = ITEM_PREDATOR|ITEM_ABSTRACT
+	storage_slots = 14
+	storage_flags = STORAGE_SHOW_FULLNESS
+	can_hold = list(
+					/obj/item/tool/surgery/Stabilizer_gel,
+					/obj/item/tool/surgery/healing_gun,
+					/obj/item/tool/surgery/wound_clamp,
+					/obj/item/reagent_container/hypospray/autoinjector/yautja,
+					/obj/item/device/healthanalyzer/alien)
+
+	var/obj/item/clothing/gloves/yautja/source = null
+
+/obj/item/storage/medicomp/full/fill_preset_inventory()
+	new /obj/item/tool/surgery/Stabilizer_gel(src)
+	new /obj/item/tool/surgery/healing_gun(src)
+	new /obj/item/tool/surgery/wound_clamp(src)
+	new	/obj/item/device/healthanalyzer/alien(src)
+	new	/obj/item/reagent_container/hypospray/autoinjector/yautja(src)
+	new	/obj/item/reagent_container/hypospray/autoinjector/yautja(src)
+	new	/obj/item/reagent_container/hypospray/autoinjector/yautja(src)
+	new /obj/item/tool/surgery/Stabilizer_gel(src)
+	new /obj/item/tool/surgery/healing_gun(src)
+	new /obj/item/tool/surgery/wound_clamp(src)

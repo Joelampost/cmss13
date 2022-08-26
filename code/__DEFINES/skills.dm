@@ -75,6 +75,7 @@
 #define SKILL_SURGERY_TRAINED 2 //Can do all surgeries (Doctors)
 #define SKILL_SURGERY_EXPERT 3
 #define SKILL_SURGERY_MAX 3
+#define SKILL_SURGERY_YAUTJA 3 //for medicomp so humans cannot do it themselves at round start to power game
 //higher levels means faster surgery.
 
 

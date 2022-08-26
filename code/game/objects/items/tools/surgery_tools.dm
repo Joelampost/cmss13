@@ -303,6 +303,37 @@ t. optimisticdude
 	w_class = SIZE_SMALL
 	flags_item = NOBLUDGEON
 
+/*
+ * MEDICOMP TOOLS
+ */
+
+/obj/item/tool/surgery/Stabilizer_gel
+	name = "Stabilizer gel vial"
+	icon_state = "predator_cautery"
+	desc = "Used for stabilizing wounds for treatment."
+	force = 0
+	throwforce = 1.0
+	w_class = SIZE_SMALL
+	flags_item = ITEM_PREDATOR
+/obj/item/tool/surgery/healing_gun
+	name = "healing gun"
+	icon_state = "predator_bone-gel"
+	desc = "Used for mending stabilized wounds."
+	force = 0
+	throwforce = 1.0
+	w_class = SIZE_SMALL
+	flags_item = ITEM_PREDATOR
+
+/obj/item/tool/surgery/wound_clamp
+	name = "wound clamp"
+	icon_state = "predator_bonesetter"
+	desc = "Used for clamping wounds after treatment."
+	force = 0
+	throwforce = 1.0
+	w_class = SIZE_SMALL
+	flags_item = ITEM_PREDATOR
+
+
 //XENO AUTOPSY TOOL
 
 /obj/item/tool/surgery/WYautopsy
