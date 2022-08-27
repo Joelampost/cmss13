@@ -124,7 +124,7 @@
 	tools = SURGERY_TOOLS_MEDICOMP_CLAMP_WOUND
 	time = 10 SECONDS
 
-/datum/surgery_step/cauterize/tool_check(mob/user, obj/item/tool, datum/surgery/surgery)
+/datum/surgery_step/cauterize/mclamp_wound/tool_check(mob/user, obj/item/tool, datum/surgery/surgery)
 	. = ..()
 	if((. in tools_lit) && !tool.heat_source)
 		return FALSE
