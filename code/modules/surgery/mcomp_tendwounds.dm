@@ -135,7 +135,7 @@
 		SPAN_NOTICE("[user] begin to clamp your wounds with \the [tool]."),
 		SPAN_NOTICE("[user] begins to clamp [target]'s wounds with \the [tool]."))
 
-/datum/surgery_step/cauterize/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
+/datum/surgery_step/cauterize/mclamp_wound/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	target.heal_overall_damage(150,150) //makes sure that all damage is healed if they have no damage at this stage they will not loud roar
 
 	if(!target.getBruteLoss() && !target.getFireLoss())
