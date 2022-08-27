@@ -39,7 +39,7 @@
 	user.affected_message(target,
 		SPAN_NOTICE("You begin to stabilize your wounds with \the [tool]."),
 		SPAN_NOTICE("[user] begins to stabilize your wounds with \the [tool]."),
-		SPAN_NOTICE("[user] begins tto stabilize [target]'s wounds with \the [tool]."))
+		SPAN_NOTICE("[user] begins to stabilize [target]'s wounds with \the [tool]."))
 
 	target.custom_pain("It feels like your body is being stabbed with needles - because it is!")
 	log_interact(user, target, "[key_name(user)] began to stabilizing wounds on [key_name(target)] with \the [tool], starting [surgery].")
