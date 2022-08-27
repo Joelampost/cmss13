@@ -33,8 +33,6 @@
 	tools = SURGERY_TOOLS_MEDICOMP_STABILIZE_WOUND
 	time = 5 SECONDS
 
-/datum/surgery_step/mstabilize_wounds/(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
-
 /datum/surgery_step/mstabilize_wounds/preop(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	user.affected_message(target,
 		SPAN_NOTICE("You begin to stabilize your wounds with \the [tool]."),
@@ -46,7 +44,7 @@
 
 /datum/surgery_step/mstabilize_wounds/success(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	target.heal_overall_damage(25,25)
-	playsound(target, 'sound/misc/wound_stabilize.ogg', 25,)
+	playsound(target, 'sound/misc/wound_stabilize.ogg',25)
 
 	if(isSpeciesYautja(target))
 		target.emote("click")
@@ -59,7 +57,7 @@
 			SPAN_NOTICE("You finish stabilizing the wounds on [target]."),
 			SPAN_NOTICE("[user] finishes stabilizing the [target]'s wounds."))
 
-		surgery.affected_limb.remove_all_bleeding(TRUE, FALSE)
+		surgery.affected_limb.remove_all_bleeding()
 		log_interact(user, target, "[key_name(user)] finished stabilizing [key_name(target)]'s wounds with \the [tool], ending [surgery].")
 	else
 		user.affected_message(target,
@@ -82,9 +80,9 @@
 /datum/surgery_step/mtend_wounds/preop(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	user.affected_message(target,
 		SPAN_NOTICE("you begin to tend your stabilized wounds with \the [tool]."),
-		SPAN_NOTICE("You begins to tend [target]'s wounds with \the [tool]."),
-		SPAN_NOTICE("[user] begins to suture and tend [target]'s wounds with \the [tool]."))
-	playsound(target, 'sound/misc/heal_gun.ogg', 25,)
+		SPAN_NOTICE("You begins to tend [target]'s stabilized wounds with \the [tool]."),
+		SPAN_NOTICE("[user] begins to suture and tend [target]'s stabilized wounds with \the [tool]."))
+	playsound(target, 'sound/misc/heal_gun.ogg',25)
 
 	target.custom_pain("It feels like your body is being stabbed with needles - because it is!")
 	log_interact(user, target, "[key_name(user)] began tending wounds on [key_name(target)] with \the [tool], starting [surgery].")
@@ -96,14 +94,13 @@
 		user.affected_message(target,
 			SPAN_NOTICE("you finish treating your stabilized wounds."),
 			SPAN_NOTICE("[user] finishes treating the stabilized wounds on [target]."),
-			SPAN_NOTICE("[user] finishes treating the [target]'s wounds."))
+			SPAN_NOTICE("[user] finishes treating the [target]'s stabilized wounds."))
 
 	if(isSpeciesYautja(target))
 		target.emote("click")
 	else
 		target.emote("pain")
 
-		surgery.affected_limb.remove_all_bleeding(TRUE, FALSE)
 		log_interact(user, target, "[key_name(user)] finished tending [key_name(target)]'s wounds with \the [tool], ending [surgery].")
 
 		user.affected_message(target,
@@ -140,9 +137,9 @@
 
 	if(!target.getBruteLoss() && !target.getFireLoss())
 		user.affected_message(target,
-		SPAN_NOTICE("You clamp your injuries OH THE PAIN!."),
-		SPAN_NOTICE("You clamp [target]'s injuries with \the [tool]."),
-		SPAN_NOTICE("[user] clamps the [target]'s injuries."))
+		SPAN_DANGER("You clamp your wounds OH THE PAIN!."),
+		SPAN_NOTICE("You clamp [target]'s wounds with \the [tool]."),
+		SPAN_NOTICE("[user] clamps the [target]'s wounds."))
 
 	if(isYautja(target))
 		target.emote("loudroar")
@@ -150,9 +147,8 @@
 		target.emote("pain")
 
 	target.incision_depths[target_zone] = SURGERY_DEPTH_SURFACE
-	surgery.affected_limb.remove_all_bleeding(TRUE, FALSE)
 	target.pain.recalculate_pain()
-	log_interact(user, target, "[key_name(user)] cauterized an incision in [key_name(target)]'s [surgery.affected_limb.display_name], ending [surgery].")
+	log_interact(user, target, "[key_name(user)] clamed a wound in [key_name(target)]'s [surgery.affected_limb.display_name], ending [surgery].")
 
 /datum/surgery_step/cauterize/mclamp_wound/failure(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
 	log_interact(user, target, "[key_name(user)] failed to tend [key_name(target)]'s wounds with \the [tool], possibly ending [surgery].")
