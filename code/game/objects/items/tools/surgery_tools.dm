@@ -309,15 +309,17 @@ t. optimisticdude
 
 /obj/item/tool/surgery/Stabilizer_gel
 	name = "Stabilizer gel vial"
-	icon_state = "predator_cautery"
+	icon_state = "Stabilizer_gel"
 	desc = "Used for stabilizing wounds for treatment."
 	force = 0
 	throwforce = 1.0
 	w_class = SIZE_SMALL
 	flags_item = ITEM_PREDATOR
+	flags_item = ANIMATED_SURGICAL_TOOL
+
 /obj/item/tool/surgery/healing_gun
 	name = "healing gun"
-	icon_state = "predator_bone-gel"
+	icon_state = "healing_gun"
 	desc = "Used for mending stabilized wounds."
 	force = 0
 	throwforce = 1.0
@@ -326,12 +328,13 @@ t. optimisticdude
 
 /obj/item/tool/surgery/wound_clamp
 	name = "wound clamp"
-	icon_state = "predator_bonesetter"
+	icon_state = "wound_clamp"
 	desc = "Used for clamping wounds after treatment."
 	force = 0
 	throwforce = 1.0
 	w_class = SIZE_SMALL
 	flags_item = ITEM_PREDATOR
+	flags_item = ANIMATED_SURGICAL_TOOL
 
 
 //XENO AUTOPSY TOOL

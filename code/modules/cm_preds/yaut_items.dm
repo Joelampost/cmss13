@@ -878,14 +878,12 @@
 /obj/item/storage/medicomp
 	name = "medicomp"
 	desc = "A complex kit of alien tools and medicines."
-	icon = 'icons/obj/items/clothing/pouches.dmi'
-	icon_state = "small_drop"
+	icon_state = "medicomp"
 	use_sound = "toolbox"
-	flags_item = ITEM_PREDATOR
 	w_class = SIZE_SMALL
-	flags_item = ITEM_PREDATOR|ITEM_ABSTRACT
+	storage_flags = STORAGE_FLAGS_DEFAULT
+	flags_item = ITEM_PREDATOR
 	storage_slots = 14
-	storage_flags = STORAGE_SHOW_FULLNESS
 	can_hold = list(
 					/obj/item/tool/surgery/Stabilizer_gel,
 					/obj/item/tool/surgery/healing_gun,
@@ -907,3 +905,9 @@
 	new /obj/item/tool/surgery/Stabilizer_gel(src)
 	new /obj/item/tool/surgery/healing_gun(src)
 	new /obj/item/tool/surgery/wound_clamp(src)
+
+/obj/item/storage/medicomp/open(mob/user)
+	. = ..()
+	icon_state = "medicomp_open"
+	update_icon()
+

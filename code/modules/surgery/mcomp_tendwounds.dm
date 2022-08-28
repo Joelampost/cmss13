@@ -47,7 +47,7 @@
 	playsound(target, 'sound/misc/wound_stabilize.ogg',25)
 
 	if(isSpeciesYautja(target))
-		target.emote("click")
+		target.emote("click2")
 	else
 		target.emote("pain")
 
