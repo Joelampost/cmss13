@@ -891,7 +891,8 @@
 					/obj/item/tool/surgery/healing_gun,
 					/obj/item/tool/surgery/wound_clamp,
 					/obj/item/reagent_container/hypospray/autoinjector/yautja,
-					/obj/item/device/healthanalyzer/alien)
+					/obj/item/device/healthanalyzer/alien
+					)
 
 	var/obj/item/clothing/gloves/yautja/source = null
 

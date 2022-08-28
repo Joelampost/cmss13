@@ -8,7 +8,7 @@
 		/datum/surgery_step/mstabilize_wounds,
 		/datum/surgery_step/mtend_wounds,
 		/datum/surgery_step/cauterize/mclamp_wound,
-	)
+				)
 	lying_required = FALSE
 	self_operable = TRUE
 
@@ -22,8 +22,8 @@
 	invasiveness = list(SURGERY_DEPTH_SHALLOW)
 	steps = list(
 		/datum/surgery_step/mtend_wounds,
-		/datum/surgery_step/cauterize/mclamp_wound,
-		)
+		/datum/surgery_step/cauterize/mclamp_wound
+				)
 
 //------------------------------------
 
