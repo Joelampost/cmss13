@@ -906,8 +906,9 @@
 	new /obj/item/tool/surgery/healing_gun(src)
 	new /obj/item/tool/surgery/wound_clamp(src)
 
-/obj/item/storage/medicomp/open(mob/user)
-	. = ..()
-	icon_state = "medicomp_open"
-	update_icon()
+/obj/item/storage/medicomp/update_icon()
+	if(!contents.len)
+		icon_state = "medicomp_open"
+	else
+		icon_state = "medicomp"
 

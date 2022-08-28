@@ -103,9 +103,9 @@
 		log_interact(user, target, "[key_name(user)] finished tending [key_name(target)]'s wounds with \the [tool], ending [surgery].")
 	else
 		user.affected_message(target,
-			SPAN_NOTICE("you finish treating your stabilized injuries."),
-			SPAN_NOTICE("[user] finishes treating your stabilized injuries."),
-			SPAN_NOTICE("[user] finishes treating [target]'s stabilized injuries."))
+			SPAN_NOTICE("you finish treating your stabilized Wounds."),
+			SPAN_NOTICE("[user] finishes treating your stabilized Wounds."),
+			SPAN_NOTICE("[user] finishes treating [target]'s stabilized Wounds."))
 
 		log_interact(user, target, "[key_name(user)] tended some of [key_name(target)]'s wounds with \the [tool].")
 
@@ -136,7 +136,7 @@
 
 	if(!target.getBruteLoss() && !target.getFireLoss())
 		user.affected_message(target,
-		SPAN_DANGER("You clamp your wounds OH THE PAIN!."),
+		SPAN_DANGER("YOU CLAMP YOUR WOUNDS OH THE PAIN!."),
 		SPAN_DANGER("[user] clamps your wounds with \the [tool]."),
 		SPAN_NOTICE("[user] clamps the [target]'s wounds."))
 
