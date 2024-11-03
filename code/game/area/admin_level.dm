@@ -142,6 +142,7 @@
 	soundscape_playlist = SCAPE_PL_ELEVATOR_MUSIC
 	icon_state = "yellow"
 
+
 //Simulation area
 /area/adminlevel/simulation
 	name = "Simulated Reality"

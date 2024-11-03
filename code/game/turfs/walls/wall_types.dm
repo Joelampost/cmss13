@@ -466,6 +466,7 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 	desc = "The patterns engraved on the wall seem to shift as you try to focus on them. You feel sick"
 	icon = 'icons/turf/walls/cult.dmi'
 	icon_state = "cult"
+	baseturfs = /turf/open/floor/strata
 	walltype = WALL_CULT
 	color = "#3c3434"
 
@@ -478,6 +479,10 @@ INITIALIZE_IMMEDIATE(/turf/closed/wall/indestructible/splashscreen)
 /turf/closed/wall/vault/Initialize()
 	. = ..()
 	icon_state = "[type]vault"
+
+/turf/closed/wall/cult/hunting_grounds
+	name = "wall"
+	hull = 1
 
 
 //Hangar walls

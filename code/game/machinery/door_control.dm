@@ -207,6 +207,9 @@
 		if(!(stat & NOPOWER))
 			icon_state = initial(icon_state) + "0"
 
+
+
+
 /obj/structure/machinery/door_control/brbutton
 	icon_state = "big_red_button_wallv"
 
