@@ -8,9 +8,7 @@ $dark: #000011;
   $color-fg: $light
 );
 
-@use '../crt.scss' with (
-  $scrollbar-color-multiplier: 1
-);
+@use '../crt.scss';
 
 .theme-crtblue {
   @extend %theme-crt;

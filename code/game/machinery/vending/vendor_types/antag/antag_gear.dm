@@ -46,7 +46,6 @@
 		/obj/item/roller,
 		/obj/item/tool/surgery/surgical_line,
 		/obj/item/tool/surgery/synthgraft,
-		/obj/structure/bed/medevac_stretcher/upp,
 	)
 
 /obj/effect/essentials_set/upp_heavy

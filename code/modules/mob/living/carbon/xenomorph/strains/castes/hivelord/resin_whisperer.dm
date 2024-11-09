@@ -43,6 +43,7 @@
 /datum/action/xeno_action/activable/secrete_resin/remote
 	name = "Coerce Resin (100)"
 	action_icon_state = "secrete_resin"
+	ability_name = "coerce resin"
 	xeno_cooldown = 2.5 SECONDS
 	thick = FALSE
 	make_message = FALSE

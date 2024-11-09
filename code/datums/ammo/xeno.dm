@@ -127,6 +127,7 @@
 	accuracy_var_high = PROJECTILE_VARIANCE_TIER_6
 	accurate_range = 5
 	max_range = 5
+	scatter = SCATTER_AMOUNT_NEURO
 	bonus_projectiles_amount = EXTRA_PROJECTILES_TIER_4
 
 /datum/ammo/xeno/toxin/shotgun/New()
@@ -137,7 +138,6 @@
 /datum/ammo/xeno/toxin/shotgun/additional
 	name = "additional neurotoxic droplets"
 
-	scatter = SCATTER_AMOUNT_NEURO
 	bonus_projectiles_amount = 0
 
 /datum/ammo/xeno/acid

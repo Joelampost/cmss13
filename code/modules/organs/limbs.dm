@@ -182,14 +182,11 @@
 	if(severity == 2)
 		probability = 1
 		damage = 3
-	if(can_emp_delimb() && prob(probability))
+	if(prob(probability))
 		droplimb(0, 0, "EMP")
 	else
 		take_damage(damage, 0, 1, 1, used_weapon = "EMP")
 
-/// If this limb can be dropped as a result of an EMP
-/obj/limb/proc/can_emp_delimb()
-	return TRUE
 
 /obj/limb/proc/take_damage_organ_damage(brute, sharp)
 	if(!owner)
@@ -1315,12 +1312,6 @@ treat_grafted var tells it to apply to grafted but unsalved wounds, for burn kit
 	vital = 1
 	splint_icon_amount = 1
 	bandage_icon_amount = 2
-
-/obj/limb/groin/can_emp_delimb()
-	if(status & (LIMB_ROBOT | LIMB_SYNTHSKIN))
-		return FALSE
-
-	return TRUE
 
 /obj/limb/leg
 	name = "leg"

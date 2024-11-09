@@ -366,7 +366,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 			J.current_positions++
 			return TRUE
 
-/datum/authority/branch/role/proc/check_role_entry(mob/new_player/M, datum/job/J, latejoin = FALSE, faction)
+/datum/authority/branch/role/proc/check_role_entry(mob/new_player/M, datum/job/J, latejoin = FALSE)
 	if(jobban_isbanned(M, J.title))
 		return FALSE
 	if(J.role_ban_alternative && jobban_isbanned(M, J.role_ban_alternative))
@@ -379,9 +379,6 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 		return FALSE
 	if(latejoin && !J.late_joinable)
 		return FALSE
-	if(faction && faction != J.faction_menu)
-		return FALSE
-
 	return TRUE
 
 /datum/authority/branch/role/proc/free_role(datum/job/J, latejoin = 1) //Want to make sure it's a job, and nothing like a MODE or special role.
@@ -497,8 +494,6 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 			join_turf = get_turf(pick(GLOB.spawns_by_squad_and_job[assigned_squad][new_job.type]))
 		else if(GLOB.spawns_by_job[new_job.type])
 			join_turf = get_turf(pick(GLOB.spawns_by_job[new_job.type]))
-		else if(GLOB.spawns_by_job[new_job.title])
-			join_turf = get_turf(pick(GLOB.spawns_by_job[new_job.title]))
 		else if(assigned_squad && GLOB.latejoin_by_squad[assigned_squad])
 			join_turf = get_turf(pick(GLOB.latejoin_by_squad[assigned_squad]))
 		else
@@ -667,7 +662,7 @@ I hope it's easier to tell what the heck this proc is even doing, unlike previou
 
 // returns TRUE if transfer_marine's role is at max capacity in the new squad
 /datum/authority/branch/role/proc/check_squad_capacity(mob/living/carbon/human/transfer_marine, datum/squad/new_squad)
-	if(!isnull(new_squad.roles_cap[transfer_marine.job]))
+	if(transfer_marine.job in new_squad.roles_cap)
 		if(new_squad.roles_in[transfer_marine.job] >= new_squad.roles_cap[transfer_marine.job])
 			return TRUE
 	return FALSE

@@ -26,14 +26,9 @@
 	var/marine_filter = list() // individual marine hiding control - list of string references
 	var/marine_filter_enabled = TRUE
 	var/faction = FACTION_MARINE
-	var/obj/structure/orbital_cannon/current_orbital_cannon
 
 	var/datum/tacmap/tacmap
 	var/minimap_type = MINIMAP_FLAG_USCM
-
-	var/list/possible_options = list("Blue" = "crtblue", "Green" = "crtgreen", "Yellow" = "crtyellow", "Red" = "crtred")
-	var/list/chosen_theme = list("Blue", "Green", "Yellow", "Red")
-	var/command_channel_key = ":v"
 
 
 	///List of saved coordinates, format of ["x", "y", "comment"]
@@ -41,17 +36,17 @@
 	///Currently selected UI theme
 	var/ui_theme = "crtblue"
 
+
 /obj/structure/machinery/computer/overwatch/Initialize()
 	. = ..()
-	if(faction == FACTION_MARINE)
-		current_orbital_cannon = GLOB.almayer_orbital_cannon
+
+	if (faction == FACTION_MARINE)
 		tacmap = new /datum/tacmap/drawing(src, minimap_type)
 	else
 		tacmap = new(src, minimap_type) // Non-drawing version
 
 /obj/structure/machinery/computer/overwatch/Destroy()
 	QDEL_NULL(tacmap)
-	current_orbital_cannon = null
 	return ..()
 
 /obj/structure/machinery/computer/overwatch/attackby(obj/I as obj, mob/user as mob)  //Can't break or disassemble.
@@ -86,12 +81,10 @@
 	if(!ishuman(user))
 		return ..()
 	if(mods["alt"]) //Changing UI theme
-		var/tgui_input_theme = tgui_input_list(user, "Choose a UI theme:", "UI Theme", chosen_theme)
-		if(!possible_options)
-			return
-		if(!possible_options[tgui_input_theme])
-			return
-		ui_theme = possible_options[tgui_input_theme]
+		var/list/possible_options = list("Blue"= "crtblue", "Green" = "crtgreen", "Yellow" = "crtyellow", "Red" = "crtred")
+		var/chosen_theme = tgui_input_list(user, "Choose a UI theme:", "UI Theme", list("Blue", "Green", "Yellow", "Red"))
+		if(possible_options[chosen_theme])
+			ui_theme = possible_options[chosen_theme]
 		return TRUE
 	. = ..()
 
@@ -114,7 +107,25 @@
 		ui = new(user, src, "OverwatchConsole", "Overwatch Console")
 		ui.open()
 
-/obj/structure/machinery/computer/overwatch/proc/count_marines(list/data)
+/obj/structure/machinery/computer/overwatch/ui_data(mob/user)
+	var/list/data = list()
+
+	data["theme"] = ui_theme
+
+	if(!current_squad)
+		data["squad_list"] = list()
+		for(var/datum/squad/current_squad in GLOB.RoleAuthority.squads)
+			if(current_squad.active && !current_squad.overwatch_officer && current_squad.faction == faction && current_squad.name != "Root")
+				data["squad_list"] += current_squad.name
+		return data
+
+	data["current_squad"] = current_squad.name
+
+	data["primary_objective"] = current_squad.primary_objective
+	data["secondary_objective"] = current_squad.secondary_objective
+
+	data["marines"] = list()
+
 	var/leader_count = 0
 	var/ftl_count = 0
 	var/spec_count = 0
@@ -225,7 +236,7 @@
 
 
 		switch(role)
-			if(JOB_SQUAD_LEADER, JOB_UPP_LEADER)
+			if(JOB_SQUAD_LEADER)
 				leader_count++
 				if(mob_state != "Dead")
 					leaders_alive++
@@ -233,7 +244,7 @@
 				ftl_count++
 				if(mob_state != "Dead")
 					ftl_alive++
-			if(JOB_SQUAD_SPECIALIST, JOB_UPP_SPECIALIST)
+			if(JOB_SQUAD_SPECIALIST)
 				spec_count++
 				if(marine_human)
 					var/obj/item/card/id/card = marine_human.get_idcard()
@@ -248,11 +259,11 @@
 					specialist_type = "UNKNOWN"
 				if(mob_state != "Dead")
 					spec_alive++
-			if(JOB_SQUAD_MEDIC, JOB_UPP_MEDIC)
+			if(JOB_SQUAD_MEDIC)
 				medic_count++
 				if(mob_state != "Dead")
 					medic_alive++
-			if(JOB_SQUAD_ENGI, JOB_UPP_ENGI)
+			if(JOB_SQUAD_ENGI)
 				engi_count++
 				if(mob_state != "Dead")
 					engi_alive++
@@ -260,7 +271,7 @@
 				smart_count++
 				if(mob_state != "Dead")
 					smart_alive++
-			if(JOB_SQUAD_MARINE, JOB_UPP)
+			if(JOB_SQUAD_MARINE)
 				marine_count++
 				if(mob_state != "Dead")
 					marines_alive++
@@ -288,28 +299,6 @@
 	data["engi_alive"] = engi_alive
 	data["smart_alive"] = smart_alive
 	data["specialist_type"] = specialist_type ? specialist_type : "NONE"
-	return data
-
-/obj/structure/machinery/computer/overwatch/ui_data(mob/user)
-	var/list/data = list()
-
-	data["theme"] = ui_theme
-
-	if(!current_squad)
-		data["squad_list"] = list()
-		for(var/datum/squad/current_squad in GLOB.RoleAuthority.squads)
-			if(current_squad.active && !current_squad.overwatch_officer && current_squad.faction == faction && current_squad.name != "Root")
-				data["squad_list"] += current_squad.name
-		return data
-
-	data["current_squad"] = current_squad.name
-
-	data["primary_objective"] = current_squad.primary_objective
-	data["secondary_objective"] = current_squad.secondary_objective
-
-	data["marines"] = list()
-
-	data = count_marines(data)
 
 	data["z_hidden"] = z_hidden
 
@@ -324,10 +313,10 @@
 		has_supply_pad = TRUE
 	data["can_launch_crates"] = has_supply_pad
 	data["has_crate_loaded"] = supply_crate
-	data["can_launch_obs"] = current_orbital_cannon
-	if(current_orbital_cannon)
-		data["ob_cooldown"] = COOLDOWN_TIMELEFT(current_orbital_cannon, ob_firing_cooldown)
-		data["ob_loaded"] = current_orbital_cannon.chambered_tray
+	data["can_launch_obs"] = GLOB.almayer_orbital_cannon
+	if(GLOB.almayer_orbital_cannon)
+		data["ob_cooldown"] = COOLDOWN_TIMELEFT(GLOB.almayer_orbital_cannon, ob_firing_cooldown)
+		data["ob_loaded"] = GLOB.almayer_orbital_cannon.chambered_tray
 
 	data["supply_cooldown"] = COOLDOWN_TIMELEFT(current_squad, next_supplydrop)
 	data["operator"] = operator.name
@@ -465,10 +454,10 @@
 				return
 			x_bomb = text2num(params["x"])
 			y_bomb = text2num(params["y"])
-			if(current_orbital_cannon.is_disabled)
+			if(GLOB.almayer_orbital_cannon.is_disabled)
 				to_chat(user, "[icon2html(src, usr)] [SPAN_WARNING("Orbital bombardment cannon disabled!")]")
-			else if(!COOLDOWN_FINISHED(current_orbital_cannon, ob_firing_cooldown))
-				to_chat(user, "[icon2html(src, usr)] [SPAN_WARNING("Orbital bombardment cannon not yet ready to fire again! Please wait [COOLDOWN_TIMELEFT(current_orbital_cannon, ob_firing_cooldown)/10] seconds.")]")
+			else if(!COOLDOWN_FINISHED(GLOB.almayer_orbital_cannon, ob_firing_cooldown))
+				to_chat(user, "[icon2html(src, usr)] [SPAN_WARNING("Orbital bombardment cannon not yet ready to fire again! Please wait [COOLDOWN_TIMELEFT(GLOB.almayer_orbital_cannon, ob_firing_cooldown)/10] seconds.")]")
 			else
 				handle_bombard(user)
 
@@ -572,7 +561,7 @@
 		current_squad.send_message("Attention: A new Squad Leader has been set: [selected_sl.real_name].")
 		visible_message("[icon2html(src, viewers(src))] [SPAN_BOLDNOTICE("[selected_sl.real_name] is the new Squad Leader of squad '[current_squad]'! Logging to enlistment file.")]")
 
-	to_chat(selected_sl, "[icon2html(src, selected_sl)] <font size='3' color='blue'><B>Overwatch: You've been promoted to \'[selected_sl.job == JOB_SQUAD_LEADER ? "SQUAD LEADER" : "ACTING SQUAD LEADER"]\' for [current_squad.name]. Your headset has access to the command channel ([command_channel_key]).</B></font>")
+	to_chat(selected_sl, "[icon2html(src, selected_sl)] <font size='3' color='blue'><B>Overwatch: You've been promoted to \'[selected_sl.job == JOB_SQUAD_LEADER ? "SQUAD LEADER" : "ACTING SQUAD LEADER"]\' for [current_squad.name]. Your headset has access to the command channel (:v).</B></font>")
 	to_chat(user, "[icon2html(src, usr)] [selected_sl.real_name] is [current_squad]'s new leader!")
 
 	if(selected_sl.assigned_fireteam)
@@ -593,23 +582,13 @@
 		selected_sl.comm_title = "aSL"
 	ADD_TRAIT(selected_sl, TRAIT_LEADERSHIP, TRAIT_SOURCE_SQUAD_LEADER)
 
-	var/obj/item/device/radio/headset/sl_headset = selected_sl.get_type_in_ears(/obj/item/device/radio/headset/almayer/marine)
-	switch(faction)
-		if (FACTION_UPP)
-			sl_headset = selected_sl.get_type_in_ears(/obj/item/device/radio/headset/distress/UPP)
-
+	var/obj/item/device/radio/headset/almayer/marine/sl_headset = selected_sl.get_type_in_ears(/obj/item/device/radio/headset/almayer/marine)
 	if(sl_headset)
-		switch(faction)
-			if (FACTION_UPP)
-				sl_headset.keys += new /obj/item/device/encryptionkey/upp/command/acting(sl_headset)
-			else
-				sl_headset.keys += new /obj/item/device/encryptionkey/squadlead/acting(sl_headset)
+		sl_headset.keys += new /obj/item/device/encryptionkey/squadlead/acting(sl_headset)
 		sl_headset.recalculateChannels()
 	var/obj/item/card/id/card = selected_sl.get_idcard()
 	if(card)
-		switch(faction)
-			if (FACTION_MARINE)
-				card.access += ACCESS_MARINE_LEADER
+		card.access += ACCESS_MARINE_LEADER
 	selected_sl.hud_set_squad()
 	selected_sl.update_inv_head() //updating marine helmet leader overlays
 	selected_sl.update_inv_wear_suit()
@@ -650,7 +629,7 @@
 	var/area/ob_area = get_area(target)
 	if(!ob_area)
 		return
-	var/ob_type = current_orbital_cannon.tray.warhead ? current_orbital_cannon.tray.warhead.warhead_kind : "UNKNOWN"
+	var/ob_type = GLOB.almayer_orbital_cannon.tray.warhead ? GLOB.almayer_orbital_cannon.tray.warhead.warhead_kind : "UNKNOWN"
 
 	for(var/datum/squad/S in GLOB.RoleAuthority.squads)
 		if(!S.active)
@@ -765,7 +744,7 @@
 		to_chat(user, "[icon2html(src, user)] [SPAN_WARNING("No squad selected!")]")
 		return
 
-	if(!current_orbital_cannon.chambered_tray)
+	if(!GLOB.almayer_orbital_cannon.chambered_tray)
 		to_chat(user, "[icon2html(src, user)] [SPAN_WARNING("The orbital cannon has no ammo chambered.")]")
 		return
 
@@ -815,8 +794,8 @@
 	if(!T)
 		return
 
-	var/ob_name = lowertext(current_orbital_cannon.tray.warhead.name)
-	var/mutable_appearance/warhead_appearance = mutable_appearance(current_orbital_cannon.tray.warhead.icon, current_orbital_cannon.tray.warhead.icon_state)
+	var/ob_name = lowertext(GLOB.almayer_orbital_cannon.tray.warhead.name)
+	var/mutable_appearance/warhead_appearance = mutable_appearance(GLOB.almayer_orbital_cannon.tray.warhead.icon, GLOB.almayer_orbital_cannon.tray.warhead.icon_state)
 	notify_ghosts(header = "Bombardment Inbound", message = "\A [ob_name] targeting [get_area(T)] has been fired!", source = T, alert_overlay = warhead_appearance, extra_large = TRUE)
 
 	/// Project ARES interface log.
@@ -824,7 +803,7 @@
 
 	busy = FALSE
 	if(istype(T))
-		current_orbital_cannon.fire_ob_cannon(T, user, current_squad)
+		GLOB.almayer_orbital_cannon.fire_ob_cannon(T, user, current_squad)
 		user.count_niche_stat(STATISTICS_NICHE_OB)
 
 /obj/structure/machinery/computer/overwatch/proc/handle_supplydrop()
@@ -899,12 +878,6 @@
 	faction = FACTION_CLF
 /obj/structure/machinery/computer/overwatch/upp
 	faction = FACTION_UPP
-	minimap_type = MINIMAP_FLAG_UPP
-	command_channel_key = "#v"
-	ui_theme = "crtupp"
-	possible_options = list("UPP" = "crtupp", "Green" = "crtgreen", "Yellow" = "crtyellow", "Red" = "crtred")
-	chosen_theme = list("UPP", "Green", "Yellow", "Red")
-
 /obj/structure/machinery/computer/overwatch/pmc
 	faction = FACTION_PMC
 /obj/structure/machinery/computer/overwatch/twe
@@ -931,19 +904,9 @@
 /obj/structure/supply_drop/Initialize(mapload, ...)
 	. = ..()
 	GLOB.supply_drop_list += src
-	for(var/datum/squad/glob_squad in GLOB.RoleAuthority.squads)
-		if(squad == glob_squad.name)
-			if(glob_squad.drop_pad)
-				return
-			else
-				glob_squad.drop_pad = src
-				return
 
 /obj/structure/supply_drop/Destroy()
 	GLOB.supply_drop_list -= src
-	for(var/datum/squad/glob_squad in GLOB.RoleAuthority.squads)
-		if(squad == glob_squad.name)
-			glob_squad.drop_pad = null
 	return ..()
 
 /obj/structure/supply_drop/alpha
@@ -965,24 +928,6 @@
 /obj/structure/supply_drop/echo //extra supply drop pad
 	icon_state = "echodrop"
 	squad = SQUAD_MARINE_5
-
-//======UPP=======
-
-/obj/structure/supply_drop/upp1
-	icon_state = "alphadrop"
-	squad = SQUAD_UPP_1
-
-/obj/structure/supply_drop/upp2
-	icon_state = "bravodrop"
-	squad = SQUAD_UPP_2
-
-/obj/structure/supply_drop/upp3
-	icon_state = "charliedrop"
-	squad = SQUAD_UPP_3
-
-/obj/structure/supply_drop/upp4
-	icon_state = "deltadrop"
-	squad = SQUAD_UPP_4
 
 #undef HIDE_ALMAYER
 #undef HIDE_GROUND

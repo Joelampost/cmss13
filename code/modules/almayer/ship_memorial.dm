@@ -235,6 +235,8 @@
 	if(!person)
 		return
 
+	var/obj/effect/client_image_holder/memorial_ghost/ghost = new(user, user, person)
+
 	///All acceptable turfs where the ghost could spawn.
 	var/list/ghost_turf = list()
 	for(var/turf/turf in range(user.loc, range))
@@ -246,7 +248,7 @@
 			continue
 
 		for(var/obj/object in turf)
-			if(object.density || istype(object, /obj/effect/client_image_holder/memorial_ghost))
+			if(object.density || (object != ghost && istype(object, /obj/effect/client_image_holder/memorial_ghost)))
 				bad_turf = TRUE
 				break
 
@@ -260,11 +262,11 @@
 		ghost_turf += turf
 
 	if(!length(ghost_turf))
+		qdel(ghost)
 		return
 
-	var/turf/spawn_loc = pick(ghost_turf)
-	var/dir_to_face = get_dir(spawn_loc, user.loc)
-	var/obj/effect/client_image_holder/memorial_ghost/ghost = new(spawn_loc, user, person, dir_to_face)
+	ghost.loc = pick(ghost_turf)
+	ghost.dir = get_dir(ghost.loc, user.loc)
 
 	return ghost
 
@@ -358,7 +360,6 @@
 #undef REQUIRED_DEAD_SQUADDIES
 
 /obj/effect/client_image_holder/memorial_ghost
-	desc = "May we never forget freedom isn't free."
 	var/mob/living/mob_reference
 
 /obj/effect/client_image_holder/memorial_ghost/proc/disappear()
@@ -366,19 +367,21 @@
 	animate(shown_image, alpha = 0, QUAD_EASING, time = time_to_disappear)
 	QDEL_IN(src, time_to_disappear)
 
-/obj/effect/client_image_holder/memorial_ghost/Initialize(mapload, list/mobs_which_see_us, mob/living/reference = null, direction_to_face)
+/obj/effect/client_image_holder/memorial_ghost/Initialize(mapload, list/mobs_which_see_us, mob/living/reference = null)
 	mob_reference = reference
 	if(!mob_reference)
 		return INITIALIZE_HINT_QDEL
 
-	dir = direction_to_face
+	. = ..()
 	name = mob_reference.name
-	return ..()
+	desc = "May we never forget freedom isn't free."
 
 /obj/effect/client_image_holder/memorial_ghost/generate_image()
-	var/image/created = image(null, src, null, image_layer, src.dir, image_pixel_x, image_pixel_y)
+	var/image/created = image(null, src, null, image_layer, dir = src.dir)
 	created.appearance = mob_reference.appearance
 	created.transform = matrix(mob_reference.base_transform)
+	created.pixel_x = image_pixel_x
+	created.pixel_y = image_pixel_y
 	created.alpha = 0
 	if(image_color)
 		created.color = image_color

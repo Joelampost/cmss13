@@ -20,7 +20,6 @@
 	var/point_cost = 0 //how many points it costs to build this with the fabricator, set to 0 if unbuildable.
 	var/skill_required = SKILL_PILOT_TRAINED
 	var/combat_equipment = TRUE
-	var/faction_exclusive //if null all factions can print it
 
 
 /obj/structure/dropship_equipment/Destroy()
@@ -866,11 +865,6 @@
 	var/medevac_cooldown
 	var/busy_winch
 	combat_equipment = FALSE
-	faction_exclusive = FACTION_MARINE
-
-/obj/structure/dropship_equipment/medevac_system/upp
-	name = "\improper RMU-4M Medevac System UPP"
-	faction_exclusive = FACTION_UPP
 
 /obj/structure/dropship_equipment/medevac_system/Destroy()
 	if(linked_stretcher)
@@ -889,10 +883,7 @@
 
 /obj/structure/dropship_equipment/medevac_system/proc/get_targets()
 	. = list()
-
 	for(var/obj/structure/bed/medevac_stretcher/MS in GLOB.activated_medevac_stretchers)
-		if(MS.faction != faction_exclusive)
-			continue
 		var/area/AR = get_area(MS)
 		var/evaccee_name
 		var/evaccee_triagecard_color
@@ -1157,11 +1148,6 @@
 	var/fulton_cooldown
 	var/busy_winch
 	combat_equipment = FALSE
-	faction_exclusive = FACTION_MARINE
-
-/obj/structure/dropship_equipment/fulton_system/upp
-	name = "\improper UPP RMU-19 Fulton Recovery System"
-	faction_exclusive = FACTION_UPP
 
 /obj/structure/dropship_equipment/fulton_system/update_equipment()
 	if(ship_base)
@@ -1238,15 +1224,13 @@
 
 /obj/structure/dropship_equipment/fulton_system/proc/get_targets()
 	. = list()
-	for(var/obj/item/stack/fulton/fulton in GLOB.deployed_fultons)
-		if(faction_exclusive != fulton.faction)
-			continue
+	for(var/obj/item/stack/fulton/F in GLOB.deployed_fultons)
 		var/recovery_object
-		if(fulton.attached_atom)
-			recovery_object = fulton.attached_atom.name
+		if(F.attached_atom)
+			recovery_object = F.attached_atom.name
 		else
 			recovery_object = "Empty"
-		.["[recovery_object]"] = fulton
+		.["[recovery_object]"] = F
 
 /obj/structure/dropship_equipment/fulton_system/equipment_interact(mob/user)
 	if(!can_fulton(user))
@@ -1262,17 +1246,17 @@
 	if(!fulton_choice)
 		return
 
-	var/obj/item/stack/fulton/fulton = possible_fultons[fulton_choice]
+	var/obj/item/stack/fulton/F = possible_fultons[fulton_choice]
 	if(!fulton_choice)
 		return
 
 	if(!ship_base) //system was uninstalled midway
 		return
 
-	if(is_ground_level(fulton.z)) //in case the fulton popped during our input()
+	if(is_ground_level(F.z)) //in case the fulton popped during our input()
 		return
 
-	if(!fulton.attached_atom)
+	if(!F.attached_atom)
 		to_chat(user, SPAN_WARNING("This balloon stretcher is empty."))
 		return
 
@@ -1293,7 +1277,7 @@
 
 	to_chat(user, SPAN_NOTICE(" You move your dropship above the selected balloon's beacon."))
 
-	activate_winch(user, fulton)
+	activate_winch(user, F)
 
 /obj/structure/dropship_equipment/fulton_system/proc/activate_winch(mob/user, obj/item/stack/fulton/linked_fulton)
 	set waitfor = 0

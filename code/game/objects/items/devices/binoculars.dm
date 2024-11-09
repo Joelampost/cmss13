@@ -14,10 +14,7 @@
 	throw_speed = SPEED_VERY_FAST
 	/// If FALSE won't change icon_state to a camo marine bino.
 	var/uses_camo = TRUE
-	var/tile_offset = 11
-	var/viewsize = 12
-	var/hvh_tile_offset = 6 //same as miniscopes
-	var/hvh_zoom_viewsize = 7
+
 
 	//matter = list("metal" = 50,"glass" = 50)
 
@@ -32,10 +29,8 @@
 
 	if(SEND_SIGNAL(user, COMSIG_BINOCULAR_ATTACK_SELF, src))
 		return
-	if(SSticker.mode && MODE_HAS_TOGGLEABLE_FLAG(MODE_NO_SNIPER_SENTRY))
-		zoom(user, hvh_tile_offset, hvh_zoom_viewsize)
-	else
-		zoom(user, tile_offset, viewsize)
+
+	zoom(user, 11, 12)
 
 /obj/item/device/binoculars/dropped(/obj/item/item, mob/user)
 	. = ..()

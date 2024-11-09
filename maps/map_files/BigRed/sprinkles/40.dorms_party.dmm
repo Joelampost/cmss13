@@ -138,6 +138,10 @@
 /obj/structure/pipes/standard/simple/hidden/green,
 /turf/open/floor,
 /area/bigredv2/outside/dorms)
+"aD" = (
+/obj/effect/landmark/corpsespawner/colonist/random,
+/turf/open/floor,
+/area/bigredv2/outside/dorms)
 "aE" = (
 /obj/structure/bed/chair{
 	dir = 4
@@ -379,6 +383,7 @@
 /turf/open/floor,
 /area/bigredv2/outside/dorms)
 "iE" = (
+/obj/effect/landmark/corpsespawner/colonist/random,
 /obj/effect/decal/cleanable/blood,
 /obj/structure/machinery/camera/autoname,
 /turf/open/floor,
@@ -441,7 +446,7 @@ ad
 ad
 ad
 ad
-ad
+aD
 ad
 bf
 "}
@@ -539,7 +544,7 @@ aq
 ad
 an
 az
-ad
+aD
 aT
 aK
 bn
