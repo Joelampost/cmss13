@@ -326,3 +326,62 @@
 			COOLDOWN_START(src, panel_emote_cooldown, 2.5 SECONDS)
 			ui.user.emote(initial(path.key))
 			return TRUE
+
+/datum/action/human_action/activable/leap
+	name = "Leap"
+	icon_file = 'icons/mob/hud/actions_yautja.dmi'
+	action_icon_state = "leap"
+	listen_signal = COMSIG_KB_YAUTJA_LEAPER
+	cooldown = 4 SECONDS
+	var/distance = 6
+	var/leap_speed = SPEED_FAST
+
+/datum/action/human_action/activable/leap/action_activate()
+	. = ..()
+	if(!ishuman(owner))
+		return
+
+/datum/action/human_action/activable/leap/use_ability(atom/target)
+	var/mob/living/carbon/human/hunter = owner
+
+	if(!target)
+		return
+
+	if(!ishuman(owner))
+		return
+
+	if(!action_cooldown_check())
+		to_chat(hunter, SPAN_WARNING("You need to wait before you can leap again!"))
+		return
+
+	if(target.layer >= FLY_LAYER)
+		return
+
+	if(!isturf(owner.loc))
+		to_chat(owner, SPAN_WARNING("You can't leap from here!"))
+		return
+
+	if(hunter.body_position == LYING_DOWN)
+		to_chat(hunter, SPAN_WARNING("Your core strength is not that strong!"))
+		return
+
+	if(target == hunter)
+		to_chat(hunter, SPAN_WARNING("You can't leap to yourself!"))
+		return
+
+	if(hunter.action_busy)
+		return
+
+	to_chat(hunter, SPAN_NOTICE("You prepare to leap towards [target]."))
+	var/leap_grunt_sound = pick('sound/voice/pred_grunt1.ogg', 'sound/voice/pred_grunt2.ogg')
+	playsound(hunter.loc, leap_grunt_sound)
+	if(!do_after(hunter, 2 SECONDS, INTERRUPT_NO_NEEDHAND, BUSY_ICON_HOSTILE))
+		to_chat(hunter, SPAN_WARNING("You stop preparing to leap."))
+		return
+
+	hunter.visible_message(SPAN_NOTICE("[hunter] leaps towards [target]!"),
+	SPAN_NOTICE("You leap towards [target]!"))
+	var/leap_sound = pick('sound/voice/pred_leap1.ogg', 'sound/voice/pred_leap2.ogg')
+	playsound(hunter.loc, leap_sound)
+	hunter.throw_atom(target, distance, leap_speed, launch_type = HIGH_LAUNCH)
+	enter_cooldown()

@@ -19,8 +19,7 @@
 		playsound_client(hunter.client, elder_picked, 25)
 		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat_spaced), hunter, "[SPAN_YAUTJABOLDBIG("Overseer Message Log")]<br><br>[SPAN_YAUTJABOLDBIG("[title_text]")]<br><br>[SPAN_YAUTJABOLD(text)]", MESSAGE_TYPE_RADIO), 12 SECONDS)
 	if(elder_user != "AutomatedMessage")
-		message_admins("[elder_user] has created a Yautja Elder Overseer message")
-		log_admin("[elder_user] created a predator council message: [text]")
+		message_admins("[elder_user] has created a Yautja Elder Overseer message: [text]")
 
 /client/proc/pred_council_message()
 	set name = "Yautja Overseer Report"

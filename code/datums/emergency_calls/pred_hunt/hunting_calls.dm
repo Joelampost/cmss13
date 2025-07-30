@@ -71,7 +71,7 @@
 		to_chat(hunted, SPAN_BOLD("You dreamt of becoming the ultimate badass ever since you were a kid. Nukes, knives, sharp sticks - and the corps was for you, enlisting into the marines as soon as you could join. There were little regrets from you, happily gunning down anything, anytime, and anywhere you were told to go... until now. During a jungle patrol, your entire squad was torn to shreds by a single cloaker - something you previously figured was made up just to scare chickenshit privates. Riddling the freak with bullet holes, it finally catches you off guard, and after that it's all hazy. Waking up, you realize you're still alive... and that it left you with your weapon. Big mistake. You get up."))
 
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound_client), hunted.client, 'sound/misc/hunt_begin.ogg'), 10 SECONDS)
-	show_blurb(hunted, 15, message, null, "center", "center", COLOR_RED, null, null, 1)
+	to_chat(hunted, SPAN_ROLE_HEADER(message))
 
 /datum/emergency_call/pred/mixed/medium
 	name = "Hunting Grounds - Multi Faction - Medium"
@@ -155,7 +155,7 @@
 		to_chat(new_xeno, SPAN_BOLD("You are a xenomorph let loose on a strange planet."))
 
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound_client), new_xeno.client, 'sound/misc/hunt_begin.ogg'), 10 SECONDS)
-	show_blurb(new_xeno, 15, message, null, "center", "center", COLOR_RED, null, null, 1)
+	to_chat(new_xeno, SPAN_ROLE_HEADER(message))
 	new /obj/effect/alien/weeds/node/feral(spawn_loc)
 
 /datum/emergency_call/pred/xeno/med

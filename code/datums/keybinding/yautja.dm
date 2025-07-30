@@ -432,3 +432,10 @@
 	if(istype(held_item))
 		held_item.gauntlet_guard()
 	return TRUE
+
+/datum/keybinding/yautja/leap
+	hotkey_keys = list("Unbound")
+	classic_keys = list("Unbound")
+	name = "leap"
+	full_name = "Leap"
+	keybind_signal = COMSIG_KB_YAUTJA_LEAPER

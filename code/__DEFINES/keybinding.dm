@@ -179,6 +179,7 @@
 #define COMSIG_KB_YAUTJA_BRACER_ATTACHMENT "keybinding_yautja_bracer_attachement"
 #define COMSIG_KB_YAUTJA_TRACK_GEAR "keybinding_yautja_track_gear"
 #define COMSIG_KB_YAUTJA_CLOAKER "keybinding_yautja_cloaker"
+#define COMSIG_KB_YAUTJA_LEAPER "keybinding_yautja_leaper"
 #define COMSIG_KB_YAUTJA_CASTER "keybinding_yautja_caster"
 #define COMSIG_KB_YAUTJA_CHANGE_EXPLOSION_TYPE "keybinding_yautja_change_explosion_type"
 #define COMSIG_KB_YAUTJA_ACTIVATE_SUICIDE "keybinding_yautja_activate_suicide"
