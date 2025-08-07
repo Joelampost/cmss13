@@ -574,6 +574,7 @@
 		/obj/item/clothing/glasses,
 		/obj/item/ammo_magazine/pistol,
 		/obj/item/ammo_magazine/handful,
+		/obj/item/ammo_magazine/revolver,
 		/obj/item/reagent_container/food/snacks/donut/normal,
 		/obj/item/reagent_container/food/snacks/donut/jelly,
 		/obj/item/weapon/baton,
@@ -1441,7 +1442,7 @@
 /obj/item/storage/belt/gun/attack_hand(mob/user, mods)
 	if(length(holstered_guns) && ishuman(user) && loc == user)
 		var/obj/item/I
-		if(mods && mods[ALT_CLICK] && length(contents) > length(holstered_guns)) //Withdraw the most recently inserted magazine, if possible.
+		if(mods && mods[ALT_CLICK] && length(contents) > length(holstered_guns) && !HAS_TRAIT(user, TRAIT_HAULED)) //Withdraw the most recently inserted magazine, if possible.
 			var/list/magazines = contents - holstered_guns
 			I = magazines[length(magazines)]
 		else //Otherwise find and draw the last-inserted gun.
