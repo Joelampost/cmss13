@@ -34,6 +34,9 @@
 		if(xeno.mob_size >= MOB_SIZE_BIG)
 			climb_up_time = 5 SECONDS
 
+	if(isyautja(user))
+		climb_up_time = 4 SECONDS
+
 	var/mob/living/carbon/human
 	if(ishuman(user))
 		climb_up_time = 7 SECONDS
