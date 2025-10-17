@@ -1,5 +1,5 @@
 import os, re
-from github import Auth, Github, GithubIntegration, GithubException
+from github import Github, GithubException
 
 # Format - Key: Array[Label, [StringsToIgnore]]
 changelogToPrefix = {
@@ -92,8 +92,7 @@ def get_labels(pr):
     return list(labels), failed
 
 def main():
-    auth = Auth.Token(os.environ["TOKEN"])
-    g = Github(auth=auth)
+    g = Github(os.environ["TOKEN"])
     repo = g.get_repo(os.environ['REPO'])
 
     pr = repo.get_pull(int(os.environ["PR_NUMBER"]))

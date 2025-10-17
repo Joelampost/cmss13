@@ -504,9 +504,6 @@
 
 // Adding traits, etc after xeno restrains and hauls us
 /mob/living/carbon/human/proc/handle_haul(mob/living/carbon/xenomorph/xeno)
-	SetStun(0, ignore_canstun=TRUE)
-	SetKnockDown(0, ignore_canstun=TRUE)
-
 	ADD_TRAIT(src, TRAIT_FLOORED, TRAIT_SOURCE_XENO_HAUL)
 	ADD_TRAIT(src, TRAIT_HAULED, TRAIT_SOURCE_XENO_HAUL)
 	ADD_TRAIT(src, TRAIT_NO_STRAY, TRAIT_SOURCE_XENO_HAUL)

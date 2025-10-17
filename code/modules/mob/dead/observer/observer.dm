@@ -205,11 +205,6 @@
 		/atom/movable/screen/escape_menu,
 		/atom/movable/screen/buildmode,
 		/obj/effect/detector_blip,
-		/atom/movable/screen/minimap_tool,
-		/atom/movable/screen/exit_map,
-		/atom/movable/screen/minimap,
-		/atom/movable/screen/exit_map,
-		/atom/movable/screen/minimap_locator,
 	))
 
 	if(!client)
@@ -379,7 +374,9 @@
 	if(href_list["join_xeno"])
 		join_as_alien()
 	if(href_list[NOTIFY_USCM_TACMAP])
-		view_tacmaps()
+		GLOB.uscm_tacmap_status.tgui_interact(src)
+	if(href_list[NOTIFY_XENO_TACMAP])
+		GLOB.xeno_tacmap_status.tgui_interact(src)
 
 /mob/dead/observer/proc/set_huds_from_prefs()
 	if(!client || !client.prefs)
@@ -917,11 +914,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set category = "Ghost.View"
 	GLOB.crew_manifest.open_ui(src)
 
-/mob/dead/observer/verb/view_tacmaps()
-	set name = "View Tacmaps"
-	set category = "Ghost.View"
-	GLOB.tacmap_viewer.tgui_interact(src)
-
 /mob/dead/verb/hive_status()
 	set name = "Hive Status"
 	set desc = "Check the status of the hive."
@@ -949,6 +941,23 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			return
 
 		GLOB.hive_datum[hives[faction]].hive_ui.open_hive_status(src)
+
+/mob/dead/observer/verb/view_uscm_tacmap()
+	set name = "View USCM Tacmap"
+	set category = "Ghost.View"
+
+	GLOB.uscm_tacmap_status.tgui_interact(src)
+
+/mob/dead/observer/verb/view_xeno_tacmap()
+	set name = "View Xeno Tacmap"
+	set category = "Ghost.View"
+
+	var/datum/hive_status/hive = GLOB.hive_datum[XENO_HIVE_NORMAL]
+	if(!hive || !length(hive.totalXenos))
+		to_chat(src, SPAN_ALERT("There seems to be no living normal hive at the moment"))
+		return
+
+	GLOB.xeno_tacmap_status.tgui_interact(src)
 
 /mob/dead/observer/verb/view_faxes()
 	set name = "View Sent Faxes"

@@ -280,7 +280,9 @@
 		if(NOTIFY_JOIN_XENO)
 			ghost_user.join_as_alien()
 		if(NOTIFY_USCM_TACMAP)
-			ghost_user.view_tacmaps()
+			GLOB.uscm_tacmap_status.tgui_interact(ghost_user)
+		if(NOTIFY_XENO_TACMAP)
+			GLOB.xeno_tacmap_status.tgui_interact(ghost_user)
 
 /atom/movable/screen/alert/buckled
 	name = "Buckled"

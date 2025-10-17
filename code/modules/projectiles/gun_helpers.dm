@@ -336,6 +336,9 @@ DEFINES in setup.dm, referenced here.
 				//  \\
 //----------------------------------------------------------
 
+/obj/item/weapon/proc/unique_action(mob/user) //moved this up a path to make macroing for other weapons easier -spookydonut
+	return
+
 /obj/item/weapon/gun/proc/check_inactive_hand(mob/user)
 	if(user)
 		var/obj/item/weapon/gun/in_hand = user.get_inactive_hand()
@@ -803,6 +806,22 @@ DEFINES in setup.dm, referenced here.
 			user.swap_hand()
 
 	unload(user, FALSE, drop_to_ground) //We want to drop the mag on the ground.
+
+/obj/item/weapon/gun/verb/use_unique_action()
+	set category = "Weapons"
+	set name = "Unique Action"
+	set desc = "Use anything unique your firearm is capable of. Includes pumping a shotgun or spinning a revolver. If you have an active attachment, this will activate on the attachment instead."
+	set src = usr.contents
+
+	var/obj/item/weapon/gun/active_firearm = get_active_firearm(usr)
+	if(!active_firearm)
+		return
+	if(active_firearm.active_attachable)
+		src = active_firearm.active_attachable
+	else
+		src = active_firearm
+
+	unique_action(usr)
 
 /obj/item/weapon/gun/verb/toggle_gun_safety()
 	set category = "Weapons"

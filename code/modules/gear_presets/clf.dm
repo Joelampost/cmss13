@@ -169,6 +169,7 @@
 	role_comm_title = "TECH"
 
 	minimap_icon = "clf_engi"
+
 	skills = /datum/skills/clf/combat_engineer
 
 /datum/equipment_preset/clf/engineer/load_gear(mob/living/carbon/human/new_human)

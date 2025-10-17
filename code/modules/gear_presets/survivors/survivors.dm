@@ -15,6 +15,7 @@
 
 	minimap_icon = "surv"
 	minimap_background = "background_civillian"
+
 	var/survivor_variant = CIVILIAN_SURVIVOR
 
 /datum/equipment_preset/survivor/load_name(mob/living/carbon/human/new_human, randomise)

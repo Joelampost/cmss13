@@ -202,8 +202,6 @@
 	var/mob/living/M
 	if(ismob(A))
 		M = A
-		for(var/datum/action/minimap/user_map in M.actions)
-			user_map.override_locator(exterior)
 	else
 		var/mobs_amount = 0
 		for(M in A)
@@ -300,11 +298,6 @@
 				to_chat(A, SPAN_WARNING("Something is blocking the exit!"))
 			return FALSE
 
-	var/mob/living/mob
-	if(ismob(A))
-		mob = A
-		for(var/datum/action/minimap/user_map in mob.actions)
-			user_map.clear_locator_override()
 	A.forceMove(get_turf(exit_turf))
 	update_passenger_count()
 	return TRUE

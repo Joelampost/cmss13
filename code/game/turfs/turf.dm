@@ -26,8 +26,6 @@
 
 /turf
 	icon = 'icons/turf/floors/floors.dmi'
-	plane = TURF_PLANE
-
 	///Used by floors to indicate the floor is a tile (otherwise its plating)
 	var/intact_tile = TRUE
 	///Can blood spawn on this turf?
@@ -138,7 +136,7 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	anchored = TRUE
 
-/obj/vis_contents_holder/Initialize(mapload, vis, offset, backdrop = TRUE)
+/obj/vis_contents_holder/Initialize(mapload, vis, offset)
 	. = ..()
 	plane -= offset
 	vis_contents += GLOB.openspace_backdrop_one_for_all

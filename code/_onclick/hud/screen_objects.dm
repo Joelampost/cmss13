@@ -53,7 +53,6 @@
 /atom/movable/screen/action_button
 	icon = 'icons/mob/hud/actions.dmi'
 	icon_state = "template"
-	plane = ABOVE_TACMAP_PLANE
 	var/datum/action/source_action
 	var/image/maptext_overlay
 
